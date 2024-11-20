@@ -13,13 +13,6 @@ public class AirportService : IAirportService
         _flightDbContext = flightDbContext;
     }
 
-    public async Task<bool> SaveAirport(Airport airport)
-    {
-        await _flightDbContext.Airports.AddAsync(airport);
-        await _flightDbContext.SaveChangesAsync();
-        return true;
-    }
-
     public async Task<bool> ResetAndSaveAirports(List<Airport> airports)
     {
         using (var transaction = _flightDbContext.Database.BeginTransaction())
@@ -39,6 +32,25 @@ public class AirportService : IAirportService
                 return false;
             }
         }
+    }
+
+    public Task<List<Airport>> GetAirports()
+    {
+        return _flightDbContext.Airports.ToListAsync();
+    }
+
+    public async Task<List<Airport>> RandomAirports()
+    {
+        var airports = await _flightDbContext.Airports.ToListAsync();
+        
+        if (airports.Count < 2)
+        {
+            //throw FlightGeneratorException
+        }
+        
+        var randomAirports = airports.OrderBy(_ => Guid.NewGuid()).Take(2).ToList();
+
+        return randomAirports;
     }
 
     public int AirportCount()

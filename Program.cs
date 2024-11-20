@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHostedService<AirportConfiguration>();
 builder.Services.AddScoped<IAirportService, AirportService>();
+builder.Services.AddTransient<FlightFactory>();
 
 var app = builder.Build();
 
