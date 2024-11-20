@@ -1,4 +1,6 @@
 ﻿using System.Globalization;
+using backend.Entities;
+using backend.Utils;
 using CsvHelper;
 using CsvHelper.Configuration;
 
@@ -21,15 +23,17 @@ public class AirportConfiguration : IHostedService
 
     private static void InitializeAirports()
     {
-        // using (var reader = new StreamReader(AIRPORT_PATH))
-        // using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
-        // {
-        //     var records = csv.GetRecords<dynamic>().ToList();
-        //
-        //     foreach (var record in records)
-        //     {
-        //         Console.WriteLine(record);
-        //     }
-        // }
+        using (var reader = new StreamReader(AIRPORT_PATH))
+        using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)))
+        {
+            csv.Context.RegisterClassMap<AirportRecordMapper>();
+            
+            var records = csv.GetRecords<Airport>().ToList();
+        
+            foreach (var record in records)
+            {
+                Console.WriteLine(record);
+            }
+        }
     }
 }

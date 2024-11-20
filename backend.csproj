@@ -13,9 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="src\Controllers\" />
       <Folder Include="src\Data\" />
       <Folder Include="src\Dto\" />
-      <Folder Include="src\Entities\" />
       <Folder Include="src\Exceptions\" />
       <Folder Include="src\Services\" />
       <Folder Include="tests\" />
