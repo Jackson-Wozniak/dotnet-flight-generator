@@ -23,8 +23,34 @@ public class Flight
         return new Flight(departure, destination);
     }
 
-    public double CalculateDistanceMiles()
+    private double ToRadians(double coordinate)
     {
-        return 1000.0;
+        return (Math.PI / 180) * coordinate;
+    }
+
+    private double CalculateDistanceMiles()
+    {
+        const double EarthRadiusMiles = 3958.8;
+        var depLatRads = ToRadians(Departure.Latitude);
+        var depLongRads = ToRadians(Departure.Longitude);
+        var destLatRads = ToRadians(Destination.Latitude);
+        var destLongRads = ToRadians(Destination.Longitude);
+        
+        var latDiff = destLatRads - depLatRads;
+        var longDiff = destLongRads - depLongRads;
+        
+        var a = Math.Sin(latDiff / 2) * Math.Sin(latDiff / 2) +
+                Math.Cos(depLatRads) * Math.Cos(destLatRads) *
+                Math.Sin(longDiff / 2) * Math.Sin(longDiff / 2);
+
+        var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+
+        return Math.Round(EarthRadiusMiles * c, 1);
+    }
+
+    private String CalculateFlightTime()
+    {
+        var time = DistanceMiles / (100 * 1.151); //100 knots
+        return time.ToString("HH:mm");
     }
 }

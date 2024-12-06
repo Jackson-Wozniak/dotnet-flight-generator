@@ -1,4 +1,5 @@
 ﻿using backend.Dto;
+using backend.Models;
 using backend.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,17 @@ public class FlightController : ControllerBase
     }
     
     [HttpGet]
-    public ActionResult<FlightDto> CreateFlight()
+    public ActionResult<FlightDto> CreateFlight([FromQuery(Name = "max_distance")] double maxDistance = -1.0)
     {
-        var flight = _flightFactory.Generate();
+        Flight flight;
+        if (maxDistance.Equals(-1.0))
+        {
+            flight = _flightFactory.Generate();
+
+            return Ok(new FlightDto(flight));
+        }
+        
+        flight = _flightFactory.Generate(maxDistance);
 
         return Ok(new FlightDto(flight));
     }

@@ -12,7 +12,7 @@ public class Airport
     public string Continent { get; set; }
     public string Country { get; set; }
 
-    public static Airport create(string code, string name, double lat, double lon,
+    public static Airport Create(string code, string name, double lat, double lon,
         string continent, string country)
     {
         var airport = new Airport();
